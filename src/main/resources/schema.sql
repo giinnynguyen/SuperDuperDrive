@@ -22,15 +22,15 @@ CREATE TABLE IF NOT EXISTS FILES (
     filesize VARCHAR,
     userid INT,
     filedata BLOB,
-    foreign key (userid) references USERS(userid)
+    FOREIGN KEY (userid) REFERENCES USERS(userid)
 );
 
 CREATE TABLE IF NOT EXISTS CREDENTIALS (
-    credentialid INT PRIMARY KEY auto_increment,
-    url VARCHAR(100),
-    username VARCHAR (30),
-    key VARCHAR,
-    password VARCHAR,
-    userid INT,
-    foreign key (userid) references USERS(userid)
+   credentialid INT PRIMARY KEY AUTO_INCREMENT,
+   url VARCHAR(100),
+   username VARCHAR(30),
+   credential_key VARCHAR,
+   credential_password VARCHAR,
+   userid INT,
+   FOREIGN KEY (userid) REFERENCES USERS(userid)
 );
