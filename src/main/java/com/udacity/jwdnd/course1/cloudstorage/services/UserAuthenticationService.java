@@ -23,22 +23,21 @@ public class UserAuthenticationService implements AuthenticationProvider {
     }
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = "admin";
-        String password = "1234";
-        User user = new User();
-//        if (user != null) {
-//            String encodeSalt = user.getSalt();
-//            String hashPass = this.hashService.getHashedValue(password, encodeSalt);
-//            if (user.getPassword().equals(hashPass)) {
-//                return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
-//            }
-//        }
-        return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
-        //return null;
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
+        User user = this.userMapper.getUser(username);
+        if (user != null) {
+            String encodeSalt = user.getSalt();
+            String hashPass = this.hashService.getHashedValue(password, encodeSalt);
+            if (user.getPassword().equals(hashPass)) {
+                return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
+            }
+        }
+        return null;
     }
 
     @Override
-    public boolean supports(Class<?> aClass) {
-        return false;
+    public boolean supports(Class<?> authentication) {
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 }
