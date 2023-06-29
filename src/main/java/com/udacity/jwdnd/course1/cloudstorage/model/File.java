@@ -1,16 +1,17 @@
 package com.udacity.jwdnd.course1.cloudstorage.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Blob;
+import java.io.InputStream;
 @Getter
 @Setter
+@AllArgsConstructor
 public class File {
-    private int id;
-    private String name;
+    private Integer fileId;
+    private String fileName;
     private String contentType;
     private String size;
-    private int userId;
-    private Blob fileData;
+    private Integer userId;
+    private byte[] fileData;
 }

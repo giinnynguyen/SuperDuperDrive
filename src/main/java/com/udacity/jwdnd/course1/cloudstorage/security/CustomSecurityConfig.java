@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.configuration;
+package com.udacity.jwdnd.course1.cloudstorage.security;
 
 import com.udacity.jwdnd.course1.cloudstorage.services.UserAuthenticationService;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers("/signup", "/css/**", "/js/**", "/h2-console/**").permitAll()
+            .antMatchers("/signup", "/css/**", "/js/**", "/h2-console/**", "/logout").permitAll()
             .anyRequest().authenticated()
         .and()
             .formLogin()
@@ -34,6 +34,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
             .defaultSuccessUrl("/home")
         .and()
             .logout()
+            .logoutSuccessUrl("/login?logout")
         .and()
             .csrf().disable();
         http.headers().frameOptions().disable();

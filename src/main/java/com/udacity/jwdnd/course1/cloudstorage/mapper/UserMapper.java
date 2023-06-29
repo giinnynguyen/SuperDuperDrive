@@ -16,4 +16,7 @@ public interface UserMapper {
     @Delete("DELETE FROM USERS WHERE username = #{username}")
     int deleteUser(String username);
 
+    @Select("SELECT userId FROM USERS WHERE username = #{username}")
+    Integer getUserId(String username);
+
 }
