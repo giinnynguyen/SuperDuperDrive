@@ -77,13 +77,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr th:each="note: ${notes}">
                                         <td>
-                                            <button type="button" class="btn btn-success">Edit</button>
-                                            <a class="btn btn-danger">Delete</a>
+                                            <button type="button" class="btn btn-success"
+                                                    th:data-noteId="${note.getNoteId()}"
+                                                    th:data-noteTitle="${note.getTitle()}"
+                                                    th:data-noteDescription="${note.getDescription()}"
+                                                    onclick="showNoteModal(getAttribute('data-noteId'), getAttribute('data-noteTitle'), getAttribute('data-noteDescription'))"
+                                            >Edit</button>
+                                            <a th:href="@{/note/delete/{noteId}(noteId=${note.noteId})}" class="btn btn-danger">Delete</a>
                                         </td>
-                                        <th scope="row">Example Note Title</th>
-                                        <td>Example Note Description </td>
+                                        <th scope="row" th:text="${note.getTitle()}"></th>
+                                        <td th:text="${note.getDescription()}"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -99,15 +104,15 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="#" method="POST">
+                                        <form id="noteForm" action="#" method="POST" th:action="@{/note/add}" th:object="${newNote}">
                                             <input type="hidden" name="noteId" id="note-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
-                                                <input type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required>
+                                                <input th:field="*{title}" type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="note-description" class="col-form-label">Description</label>
-                                                <textarea class="form-control" name="noteDescription" id="note-description" rows="5" maxlength="1000" required></textarea>
+                                                <textarea th:field="*{description}" class="form-control" name="noteDescription" id="note-description" rows="5" maxlength="1000" required></textarea>
                                             </div>
                                             <button id="noteSubmit" type="submit" class="d-none"></button>
                                         </form>
@@ -193,9 +198,13 @@
         <script th:src="@{/js/bootstrap.min.js}"></script>
 
         <!--For opening the note modal-->
-        <script type="text/javascript">
+        <script th:inline="javascript">
             // For opening the note modal
             function showNoteModal(noteId, noteTitle, noteDescription) {
+                if(noteId !== undefined){
+                    $("#noteForm").prepend("<input type='hidden' name='_method' value='PUT'>");
+                }
+
                 $('#note-id').val(noteId ? noteId : '');
                 $('#note-title').val(noteTitle ? noteTitle : '');
                 $('#note-description').val(noteDescription ? noteDescription : '');
@@ -210,6 +219,21 @@
                 $('#credential-password').val(password ? password : '');
                 $('#credentialModal').modal('show');
             }
+
+            function init() {
+                var hash = window.location.hash;
+                if (hash) {
+                    $('.nav-link[href="' + hash + '"]').tab('show');
+                }
+            }
+
+            init();
+
+            $(document).ready(function () {
+                $(".nav-link").on('click', function() {
+                    document.location.hash = $(this).attr('href');
+                })
+            });
         </script>
     </body>
 </html>
