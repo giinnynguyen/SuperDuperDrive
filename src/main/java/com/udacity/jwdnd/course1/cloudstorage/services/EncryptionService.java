@@ -47,4 +47,11 @@ public class EncryptionService {
 
         return new String(decryptedValue);
     }
+
+    public String generateKey() throws NoSuchAlgorithmException {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(128);
+        SecretKey secretKey = keyGenerator.generateKey();
+        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
+    }
 }
