@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller.authentication;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +22,13 @@ public class SignupController {
 
     @PostMapping("/signup")
     public String signupPost(User user, Model model) {
-        Integer insertedID = this.userService.createUser(user);
-        if (insertedID > 0) {
-            model.addAttribute("message", "success");
-        } else {
-            model.addAttribute("message", "error");
+        try {
+            Integer insertedID = this.userService.createUser(user);
+        } catch (DuplicateKeyException e) {
+            model.addAttribute("message", "errorUserExist");
+            return "signup";
         }
+        model.addAttribute("message", "success");
         return "signup";
     }
 }

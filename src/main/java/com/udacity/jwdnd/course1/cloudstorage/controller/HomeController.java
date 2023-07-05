@@ -25,7 +25,7 @@ public class HomeController {
     private EncryptionService encryptionService;
 
     @GetMapping()
-    public String getHomePage(Model model) {
+    public String getHomePage(Model model, @RequestParam(value = "message", required = false) String message){
         File[] files = this.fileUploadService.getFiles();
         model.addAttribute("files", files);
 
@@ -40,11 +40,9 @@ public class HomeController {
         Credential credential = new Credential();
         model.addAttribute("newCredential", credential);
         model.addAttribute("encryptionService", this.encryptionService);
+
+        model.addAttribute("message", message);
         return "home";
     }
 
-    @PostMapping("/add")
-    public String addNote(@RequestParam("noteId") String noteId, @RequestParam("title") String noteTitle, @RequestParam("description") String noteDescription) {
-        return "home";
-    }
 }

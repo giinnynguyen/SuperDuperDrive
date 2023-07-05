@@ -11,8 +11,8 @@
     <body class="p-3 mb-2 bg-light text-black">
         <div class="container">
             <div id="logoutDiv">
-                <form action="#" th:action="@{/logout}">
-                    <button type="submit" class="btn btn-secondary float-right">Logout</button>
+                <form action="#" method="POST" th:action="@{'/logout'}">
+                    <button id="logoutButton" type="submit" class="btn btn-secondary float-right">Logout</button>
                 </form>
             </div>
             <div id="contentDiv" style="clear: right;">
@@ -24,7 +24,7 @@
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
+                    <div class="tab-pane fade active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
                         <form action="#" enctype="multipart/form-data" method="POST" th:action="@{/file/upload}">
                             <div class="container">
                                 <div class="row" style="margin: 1em;">
@@ -40,6 +40,13 @@
                                 </div>
                             </div>
                         </form>
+                        <div class="container" th:if="${message == 'fileExist'}">
+                            <p class="text-danger">File already exist.</p>
+                        </div>
+
+                        <div class="container" th:if="${message == 'emptyFile'}">
+                            <p class="text-danger">No file chosen.</p>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped" id="fileTable">
                                 <thead>
@@ -232,16 +239,18 @@
                 var hash = window.location.hash;
                 if (hash) {
                     $('.nav-link[href="' + hash + '"]').tab('show');
+                } else {
+                    $("#nav-files").addClass("show");
                 }
             }
-
-            init();
 
             $(document).ready(function () {
                 $(".nav-link").on('click', function() {
                     document.location.hash = $(this).attr('href');
                 })
             });
+
+            init();
         </script>
     </body>
 </html>

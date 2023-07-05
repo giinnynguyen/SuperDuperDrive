@@ -48,4 +48,8 @@ public class FileUploadService {
     public File getFile(Integer fileId) {
         return this.fileMapper.getFile(fileId);
     }
+
+    public boolean isFileExist(String originalFilename) {
+        return this.fileMapper.getFileByName(originalFilename) != null;
+    }
 }
