@@ -10,6 +10,13 @@
     </head>
     <body class="p-3 mb-2 bg-light text-black">
         <div class="container">
+            <div class="alert" role="alert" th:each="m: ${messages}" th:classappend="${m.contains('unsuccessfully')} ? alert-danger : alert-success"
+                 th:if="${message == m}">
+                <span th:text="${m}"></span>
+            </div>
+        </div>
+        </div>
+        <div class="container">
             <div id="logoutDiv">
                 <form action="#" method="POST" th:action="@{'/logout'}">
                     <button id="logoutButton" type="submit" class="btn btn-secondary float-right">Logout</button>
@@ -136,7 +143,7 @@
                         <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showCredentialModal()">
                             + Add a New Credential
                         </button>
-
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped" id="credentialTable">
                                 <thead>

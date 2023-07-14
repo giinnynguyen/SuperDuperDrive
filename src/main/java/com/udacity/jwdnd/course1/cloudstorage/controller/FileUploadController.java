@@ -28,7 +28,7 @@ public class FileUploadController {
     public String fileUpload(@RequestParam("fileUpload") MultipartFile fileUpload, RedirectAttributes redirectAttributes) throws IOException, SQLException {
         if (fileUpload.isEmpty()) {
             redirectAttributes.addAttribute("message", "emptyFile");
-            return "redirect:/home";
+            return "redirect:/";
         }
         boolean isFileExist = this.fileUploadService.isFileExist(fileUpload.getOriginalFilename());
         if (isFileExist) {
@@ -36,13 +36,13 @@ public class FileUploadController {
         } else {
             Integer insertedId = this.fileUploadService.insertFileToDB(fileUpload);
         }
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @GetMapping("/delete/{fileId}")
     public String deleteFile(@PathVariable Integer fileId, Model model) {
         this.fileUploadService.deleteFile(fileId);
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @GetMapping("/view/{fileId}")

@@ -31,7 +31,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
             .loginPage("/login")
             .permitAll()
-            .defaultSuccessUrl("/home", true)
+            .defaultSuccessUrl("/", true)
         .and()
             .csrf().disable();
         http.headers().frameOptions().disable();
