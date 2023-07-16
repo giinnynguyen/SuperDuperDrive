@@ -16,5 +16,31 @@ public enum SUCCESS {
         public String toString() {
             return "Credential deleted successfully";
         }
+    },
+    NOTE_CREATED {
+        public String toString() {
+            return "Note added successfully";
+        }
+    },
+    NOTE_UPDATED {
+        public String toString() {
+            return "Note updated successfully";
+        }
+    },
+    NOTE_DELETED {
+        public String toString() {
+            return "Note deleted successfully";
+        }
+    },
+    FILE_UPLOADED {
+        public String toString() {
+            return "File uploaded successfully";
+        }
+    },
+    FILE_DELETED {
+        public String toString() {
+            return "File deleted successfully";
+        }
     }
+
 }

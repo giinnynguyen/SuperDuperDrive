@@ -9,12 +9,11 @@
         <title>Home</title>
     </head>
     <body class="p-3 mb-2 bg-light text-black">
-        <div class="container">
-            <div class="alert" role="alert" th:each="m: ${messages}" th:classappend="${m.contains('unsuccessfully')} ? alert-danger : alert-success"
+        <div class="container" >
+            <div id="alertDiv" class="alert" role="alert" th:each="m: ${messages}" th:classappend="${m.contains('successfully')} ? 'alert-success' : 'alert-danger'"
                  th:if="${message == m}">
                 <span th:text="${m}"></span>
             </div>
-        </div>
         </div>
         <div class="container">
             <div id="logoutDiv">
@@ -47,13 +46,6 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="container" th:if="${message == 'fileExist'}">
-                            <p class="text-danger">File already exist.</p>
-                        </div>
-
-                        <div class="container" th:if="${message == 'emptyFile'}">
-                            <p class="text-danger">No file chosen.</p>
-                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped" id="fileTable">
                                 <thead>
@@ -143,7 +135,6 @@
                         <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showCredentialModal()">
                             + Add a New Credential
                         </button>
-                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped" id="credentialTable">
                                 <thead>
@@ -218,46 +209,6 @@
         <script th:src="@{/js/jquery-slim.min.js}"></script>
         <script th:src="@{/js/popper.min.js}"></script>
         <script th:src="@{/js/bootstrap.min.js}"></script>
-
-        <!--For opening the note modal-->
-        <script th:inline="javascript">
-            // For opening the note modal
-            function showNoteModal(noteId, noteTitle, noteDescription) {
-                if(noteId !== undefined){
-                    $("#noteForm").prepend("<input type='hidden' name='_method' value='PUT'>");
-                }
-
-                $('#note-id').val(noteId ? noteId : '');
-                $('#note-title').val(noteTitle ? noteTitle : '');
-                $('#note-description').val(noteDescription ? noteDescription : '');
-                $('#noteModal').modal('show');
-            }
-
-            // For opening the credentials modal
-            function showCredentialModal(credentialId, url, username, password) {
-                $('#credential-id').val(credentialId ? credentialId : '');
-                $('#credential-url').val(url ? url : '');
-                $('#credential-username').val(username ? username : '');
-                $('#credential-password').val(password ? password : '');
-                $('#credentialModal').modal('show');
-            }
-
-            function init() {
-                var hash = window.location.hash;
-                if (hash) {
-                    $('.nav-link[href="' + hash + '"]').tab('show');
-                } else {
-                    $("#nav-files").addClass("show");
-                }
-            }
-
-            $(document).ready(function () {
-                $(".nav-link").on('click', function() {
-                    document.location.hash = $(this).attr('href');
-                })
-            });
-
-            init();
-        </script>
+        <script th:src="@{/js/templates/home.js}"></script>
     </body>
 </html>

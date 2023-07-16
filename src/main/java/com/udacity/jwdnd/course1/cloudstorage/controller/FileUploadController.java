@@ -2,6 +2,8 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileUploadService;
+import com.udacity.jwdnd.course1.cloudstorage.utils.ERROR;
+import com.udacity.jwdnd.course1.cloudstorage.utils.SUCCESS;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -25,24 +28,33 @@ public class FileUploadController {
     }
 
     @PostMapping("/upload")
-    public String fileUpload(@RequestParam("fileUpload") MultipartFile fileUpload, RedirectAttributes redirectAttributes) throws IOException, SQLException {
+    public String fileUpload(@RequestParam("fileUpload") MultipartFile fileUpload, RedirectAttributes redirectAttributes) {
         if (fileUpload.isEmpty()) {
-            redirectAttributes.addAttribute("message", "emptyFile");
-            return "redirect:/";
+            redirectAttributes.addFlashAttribute("message", ERROR.FILE_EMPTY.toString());
+            return "redirect:/#nav-files";
         }
         boolean isFileExist = this.fileUploadService.isFileExist(fileUpload.getOriginalFilename());
         if (isFileExist) {
-            redirectAttributes.addAttribute("message", "fileExist");
+            redirectAttributes.addFlashAttribute("message", ERROR.FILE_EXISTS.toString());
         } else {
-            Integer insertedId = this.fileUploadService.insertFileToDB(fileUpload);
+            try {
+                Integer insertedId = this.fileUploadService.insertFileToDB(fileUpload);
+                redirectAttributes.addFlashAttribute("message", SUCCESS.FILE_UPLOADED.toString());
+            } catch (SQLException e) {
+                redirectAttributes.addFlashAttribute("message", ERROR.SOMETHING_WRONG.toString());
+            } catch (IOException e) {
+                redirectAttributes.addFlashAttribute("message", ERROR.SOMETHING_WRONG.toString());
+            }
         }
-        return "redirect:/";
+
+        return "redirect:/#nav-files";
     }
 
     @GetMapping("/delete/{fileId}")
-    public String deleteFile(@PathVariable Integer fileId, Model model) {
+    public String deleteFile(@PathVariable Integer fileId, RedirectAttributes redirectAttributes) {
         this.fileUploadService.deleteFile(fileId);
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("message", SUCCESS.FILE_DELETED.toString());
+        return "redirect:/#nav-files";
     }
 
     @GetMapping("/view/{fileId}")
