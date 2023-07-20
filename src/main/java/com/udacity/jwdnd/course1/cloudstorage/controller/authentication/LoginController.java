@@ -15,9 +15,4 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String loginPost() {
-        return "home";
-    }
-
 }

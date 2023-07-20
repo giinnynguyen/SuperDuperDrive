@@ -1,5 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.page.LoginPage;
+import com.udacity.jwdnd.course1.cloudstorage.page.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -13,6 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CloudStorageApplicationTests {
 
@@ -202,13 +207,28 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void testSignupAndLogin() {
-		String username = "ginnny1";
-		String password = "123456";
+		String username = "ginny";
+		String password = "12345";
 		String firstname = "Giny";
 		String lastname = "Nguyen";
 
 		driver.get("http://localhost:" + this.port + "/signup");
-		System.out.println();
+
+		SignupPage signupPage = new SignupPage(driver);
+        signupPage.signup(username, password, firstname, lastname);
+
+		assertEquals("You successfully signed up! Please login.", driver.findElement(By.id("success-msg")).getText());
+
+		driver.get("http://localhost:" + this.port + "/login");
+		LoginPage loginPage = new LoginPage(driver);
+		loginPage.login(username, password);
+		System.out.println(driver.getCurrentUrl());
+
+		assertEquals("http://localhost:" + this.port + "/", driver.getCurrentUrl());
+
+		doLogIn(username, password);
+
+
 	}
 
 

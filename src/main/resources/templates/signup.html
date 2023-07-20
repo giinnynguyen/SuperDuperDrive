@@ -16,6 +16,9 @@
 
             <h1 class="display-5">Sign Up</h1>
             <form action="#" method="POST" th-action="@{/signup}" th-object="${user}">
+                <div id="success-msg" class="alert alert-dark" th:if="${message == 'signupSuccess'}">
+                    You successfully signed up! Please login.
+                </div>
                 <div class="alert alert-danger" th:if="${message == 'errorUserExist'}">
                     <span>User already exist</span>
                 </div>
