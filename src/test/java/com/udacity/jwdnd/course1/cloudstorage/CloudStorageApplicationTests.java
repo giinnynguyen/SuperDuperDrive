@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.page.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.page.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.page.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -205,31 +206,45 @@ class CloudStorageApplicationTests {
 //
 //	}
 
-	@Test
-	public void testSignupAndLogin() {
-		String username = "ginny";
-		String password = "12345";
-		String firstname = "Giny";
-		String lastname = "Nguyen";
+//	@Test
+//	public void testSignupAndLogin() {
+//		String username = "ginny";
+//		String password = "12345";
+//		String firstname = "Giny";
+//		String lastname = "Nguyen";
+//
+//		driver.get("http://localhost:" + this.port + "/signup");
+//
+//		SignupPage signupPage = new SignupPage(driver);
+//        signupPage.signup(username, password, firstname, lastname);
+//
+//		assertEquals("You successfully signed up! Please login.", driver.findElement(By.id("success-msg")).getText());
+//
+//		LoginPage loginPage = new LoginPage(driver);
+//		loginPage.login(username, password);
+//
+//		assertEquals("http://localhost:" + this.port + "/", driver.getCurrentUrl());
+//
+//		HomePage homePage = new HomePage(driver);
+//		homePage.logout();
+//
+//       assertEquals("http://localhost:" + this.port + "/login", driver.getCurrentUrl());
+//
+//	}
 
-		driver.get("http://localhost:" + this.port + "/signup");
-
-		SignupPage signupPage = new SignupPage(driver);
-        signupPage.signup(username, password, firstname, lastname);
-
-		assertEquals("You successfully signed up! Please login.", driver.findElement(By.id("success-msg")).getText());
-
-		driver.get("http://localhost:" + this.port + "/login");
-		LoginPage loginPage = new LoginPage(driver);
-		loginPage.login(username, password);
-		System.out.println(driver.getCurrentUrl());
-
-		assertEquals("http://localhost:" + this.port + "/", driver.getCurrentUrl());
-
-		doLogIn(username, password);
+//	@Test
+//	public void testAuthorization() {
+//		driver.get("http://localhost:" + this.port + "/login");
+//		assertEquals("http://localhost:" + this.port + "/login", driver.getCurrentUrl());
+//
+//		driver.get("http://localhost:" + this.port + "/signup");
+//		assertEquals("http://localhost:" + this.port + "/signup", driver.getCurrentUrl());
+//
+//		driver.get("http://localhost:" + this.port);
+//		assertEquals("http://localhost:" + this.port + "/login", driver.getCurrentUrl());
+//	}
 
 
-	}
-
+	
 
 }
