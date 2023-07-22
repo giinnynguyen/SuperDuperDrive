@@ -2,11 +2,9 @@ package com.udacity.jwdnd.course1.cloudstorage;
 
 import com.udacity.jwdnd.course1.cloudstorage.page.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.page.LoginPage;
-import com.udacity.jwdnd.course1.cloudstorage.page.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,12 +13,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
-import java.io.File;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CloudStorageApplicationTests {
+	static String noteTitleTest = "Note Title";
+	static String noteDescriptionTest = "Note Description";
 
 	@LocalServerPort
 	private int port;
@@ -30,11 +29,13 @@ class CloudStorageApplicationTests {
 	@BeforeAll
 	static void beforeAll() {
 		WebDriverManager.chromedriver().setup();
+		//doMockSignUp("Immanuel", "Kant", "kantt", "12345");
 	}
 
 	@BeforeEach
 	public void beforeEach() {
 		this.driver = new ChromeDriver();
+		//doMockSignUp("Immanuel", "Kant", "kantt", "12345");
 	}
 
 	@AfterEach
@@ -243,8 +244,48 @@ class CloudStorageApplicationTests {
 //		driver.get("http://localhost:" + this.port);
 //		assertEquals("http://localhost:" + this.port + "/login", driver.getCurrentUrl());
 //	}
+	public void login() {
+		driver.get("http://localhost:" + this.port + "/login");
+		LoginPage loginPage = new LoginPage(driver);
+		loginPage.login("ginnynguyen", "1234");
+		assertEquals("http://localhost:" + this.port + "/", driver.getCurrentUrl());
+	}
 
+	/*Write a Selenium test that logs in an existing user, creates a note and verifies that the note details are visible
+	in the note list.*/
+	@Test
+	@Order(1)
+	public void testAddNote() {
+		login();
 
-	
+		HomePage homePage = new HomePage(driver);
+		homePage.addNote(noteTitleTest, noteDescriptionTest);
+		WebElement tdTitle = driver.findElement(By.cssSelector("#userTable tbody tr:last-child td:nth-child(2)"));
+		assertEquals(noteTitleTest, tdTitle.getAttribute("innerHTML"));
+
+		WebElement tdDesciption = driver.findElement(By.cssSelector("#userTable tbody tr:last-child td:nth-child(3)"));
+		assertEquals(noteDescriptionTest, tdDesciption.getAttribute("innerHTML"));
+	}
+
+	/*Write a Selenium test that logs in an existing user with existing notes, clicks the edit note button on an existing note,
+	changes the note data, saves the changes, and verifies that the changes appear in the note list.*/
+	@Test
+	@Order(2)
+	public void testEditNote() {
+		login();
+
+		HomePage homePage = new HomePage(driver);
+		WebElement editButtonElement = driver.findElement(By.cssSelector("#userTable tbody tr:last-child td:nth-child(1) button"));
+		String noteDescriptionTestEdit = "This is a test note edited";
+
+		homePage.editNote(editButtonElement, "Notetttt", noteDescriptionTestEdit);
+
+		WebElement editElementTitle = driver.findElement(By.cssSelector("#userTable tbody tr:last-child td:nth-child(2)"));
+		assertEquals("Notetttt", editElementTitle.getAttribute("innerHTML"));
+
+		WebElement editElementDescription = driver.findElement(By.cssSelector("#userTable tbody tr:last-child td:nth-child(3)"));
+		assertEquals(noteDescriptionTestEdit, editElementDescription.getAttribute("innerHTML"));
+	}
+
 
 }
