@@ -16,15 +16,8 @@ public class HomePage {
     @FindBy(id = "nav-notes-tab")
     private WebElement navNotesTab;
 
-
-    @FindBy(id = "note-title")
-    private WebElement noteTitle;
-
-    @FindBy(id = "note-description")
-    private WebElement noteDescription;
-
-    @FindBy(id = "noteSubmit")
-    private WebElement noteSubmit;
+    @FindBy(id = "nav-credentials-tab")
+    private WebElement navCredentialsTab;
 
     public HomePage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
@@ -37,10 +30,6 @@ public class HomePage {
 
     public void addNote(String noteTitle, String noteDescription) {
         WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
-//        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(this.openAddNoteModel));
-//        WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
-//        WebElement element0  = wait.until(ExpectedConditions.elementToBeClickable(By.id("openAddNoteModel")));
-//        element0.click();
         this.navNotesTab.click();
 
         WebElement element0 = wait.until(ExpectedConditions.elementToBeClickable(By.id("openAddNoteModel")));
@@ -54,10 +43,6 @@ public class HomePage {
 
         WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.id("note-save-changes")));
         element3.click();
-
-//        this.noteTitle.sendKeys(noteTitle);
-//        this.noteDescription.sendKeys(noteDescription);
-//        this.noteSubmit.click();
     }
 
 
@@ -78,5 +63,70 @@ public class HomePage {
 
         WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.id("note-save-changes")));
         element3.click();
+    }
+
+    public void deleteNote(WebElement deleteElement) {
+        WebElement deleteButotn = deleteElement.findElement(By.cssSelector("td:nth-child(1) a.btn-danger"));
+
+        WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
+        this.navNotesTab.click();
+
+        WebElement element0 = wait.until(ExpectedConditions.elementToBeClickable(deleteButotn));
+        element0.click();
+
+    }
+
+    public void addCredential(String credentialUrlTest, String credentialUsernameTest, String credentialPasswordTest) {
+        this.navCredentialsTab.click();
+
+        WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
+        WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.id("openAddCredentialModal")));
+        element1.click();
+
+        WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url")));
+        element2.sendKeys(credentialUrlTest);
+
+        WebElement element3 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-username")));
+        element3.sendKeys(credentialUsernameTest);
+
+        WebElement element4 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-password")));
+        element4.sendKeys(credentialPasswordTest);
+
+        WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.id("credential-save-changes")));
+        element5.click();
+    }
+
+    public void editCredential(WebElement editButtonElement, String credentialUrlTestEdit, String credentialUsernameTestEdit, String credentialPasswordTestEdit) {
+        this.navCredentialsTab.click();
+
+        WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
+        WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(editButtonElement));
+        element1.click();
+
+        WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url")));
+        element2.clear();
+        element2.sendKeys(credentialUrlTestEdit);
+
+        WebElement element3 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-username")));
+        element3.clear();
+        element3.sendKeys(credentialUsernameTestEdit);
+
+        WebElement element4 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-password")));
+        element4.clear();
+        element4.sendKeys(credentialPasswordTestEdit);
+
+        WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.id("credential-save-changes")));
+        element5.click();
+    }
+
+    public void deleteCredential(WebElement deleteElement) {
+        WebElement deleteButotn = deleteElement.findElement(By.cssSelector("td:nth-child(1) a.btn-danger"));
+
+        WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
+        this.navCredentialsTab.click();
+
+        WebElement element0 = wait.until(ExpectedConditions.elementToBeClickable(deleteButotn));
+        element0.click();
+
     }
 }
