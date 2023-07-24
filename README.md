@@ -1,5 +1,7 @@
 + Spring Boot
 + Spring MVC
++ Spring security
 + My Batis
 + Thymeleaf
-+ Spring Security
++ Selenium
++ Junit Test
